@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import logging
+import re
 import time
 from dataclasses import dataclass
 from datetime import datetime
@@ -19,6 +20,14 @@ logger = logging.getLogger(__name__)
 
 CROSSREF_API_BASE = "https://api.crossref.org/works"
 
+# Regex de loai bo HTML tags
+_HTML_TAG_RE = re.compile(r"<[^>]+>")
+
+
+def _strip_html(text: str) -> str:
+    """Loai bo HTML tags tu text."""
+    return _HTML_TAG_RE.sub("", text)
+
 
 def _generate_paper_id(doi: str, title: str) -> str:
     """Tao stable paper_id tu DOI va title hash."""
@@ -27,9 +36,10 @@ def _generate_paper_id(doi: str, title: str) -> str:
 
 
 def _normalize_text(text: str | None) -> str:
-    """Chuan hoa text: loai bo whitespace thua, tra ve empty string neu None."""
+    """Chuan hoa text: loai bo whitespace thua va HTML tags, tra ve empty string neu None."""
     if not text:
         return ""
+    text = _strip_html(text)
     return " ".join(text.split())
 
 
@@ -280,3 +290,273 @@ def load_raw_records(path: Path) -> list[PaperRecord]:
 
     logger.info(f"Loaded {len(records)} records from {path}")
     return records
+
+
+# =============================================================================
+# Checkpoint 2: Validation & Audit for Cleaning Handoff
+# =============================================================================
+
+
+@dataclass(frozen=True)
+class ValidationIssue:
+    """The hieu mot van de phat hien khi validate raw records."""
+    record_idx: int
+    doi: str
+    paper_id: str
+    field: str
+    issue_type: str
+    message: str
+
+
+@dataclass(frozen=True)
+class AuditReport:
+    """Bao cao audit cho raw records, dung de bàn giao cho cleaning."""
+    total_records: int
+    valid_records: int
+    records_with_issues: int
+    issues: list[ValidationIssue]
+    sample_records: list[PaperRecord]
+    raw_path: Path
+    record_path: Path
+
+
+def validate_raw_records(records: list[PaperRecord]) -> tuple[list[PaperRecord], list[ValidationIssue]]:
+    """Doi chieu raw records, phat hien DOI/ID loi va cac van de khac.
+
+    Args:
+        records: List PaperRecord da parse tu Crossref.
+
+    Returns:
+        Tuple (valid_records, issues). valid_records la records hop le,
+        issues la danh sach cac van de phat hien.
+    """
+    issues = []
+    valid_records = []
+
+    seen_paper_ids: dict[str, int] = {}
+    seen_DOIs: dict[str, int] = {}
+
+    for idx, record in enumerate(records):
+        record_issues = []
+
+        # Check DOI ton tai va hop le
+        if not record.abs_url:
+            record_issues.append(ValidationIssue(
+                record_idx=idx,
+                doi=record.abs_url,
+                paper_id=record.paper_id,
+                field="abs_url",
+                issue_type="MISSING_URL",
+                message="Record khong co DOI/URL",
+            ))
+
+        # Check title
+        if not record.title or len(record.title) < 5:
+            record_issues.append(ValidationIssue(
+                record_idx=idx,
+                doi=record.abs_url,
+                paper_id=record.paper_id,
+                field="title",
+                issue_type="INVALID_TITLE",
+                message=f"Title qua ngan hoac rong: '{record.title[:50] if record.title else ''}'",
+            ))
+
+        # Check duplicate paper_id
+        if record.paper_id in seen_paper_ids:
+            first_idx = seen_paper_ids[record.paper_id]
+            record_issues.append(ValidationIssue(
+                record_idx=idx,
+                doi=record.abs_url,
+                paper_id=record.paper_id,
+                field="paper_id",
+                issue_type="DUPLICATE_ID",
+                message=f"Duplicate paper_id voi record o index {first_idx}",
+            ))
+        else:
+            seen_paper_ids[record.paper_id] = idx
+
+        # Check duplicate DOI (qua URL)
+        if record.abs_url and record.abs_url in seen_DOIs:
+            first_idx = seen_DOIs[record.abs_url]
+            record_issues.append(ValidationIssue(
+                record_idx=idx,
+                doi=record.abs_url,
+                paper_id=record.paper_id,
+                field="abs_url",
+                issue_type="DUPLICATE_DOI",
+                message=f"Duplicate DOI voi record o index {first_idx}",
+            ))
+        elif record.abs_url:
+            seen_DOIs[record.abs_url] = idx
+
+        # Check date formats
+        if record.published:
+            # Check neu khong phai YYYY-MM-DD
+            date_parts = record.published.split("-")
+            if len(date_parts) != 3 or len(date_parts[0]) != 4 or len(date_parts[1]) != 2 or len(date_parts[2]) != 2:
+                record_issues.append(ValidationIssue(
+                    record_idx=idx,
+                    doi=record.abs_url,
+                    paper_id=record.paper_id,
+                    field="published",
+                    issue_type="INVALID_DATE",
+                    message=f"Published date khong dung format (YYYY-MM-DD): '{record.published}'",
+                ))
+
+        # Check authors
+        if not record.authors:
+            record_issues.append(ValidationIssue(
+                record_idx=idx,
+                doi=record.abs_url,
+                paper_id=record.paper_id,
+                field="authors",
+                issue_type="MISSING_AUTHORS",
+                message="Record khong co thong tin tac gia",
+            ))
+
+        if record_issues:
+            issues.extend(record_issues)
+        else:
+            valid_records.append(record)
+
+    return valid_records, issues
+
+
+REQUIRED_FIELDS_FOR_CLEANING = [
+    "paper_id",
+    "title",
+    "summary",
+    "authors",
+    "categories",
+    "primary_category",
+    "published",
+    "updated",
+    "abs_url",
+]
+
+
+def verify_field_completeness(records: list[PaperRecord]) -> dict[str, int]:
+    """Xac minh raw records co day du field de cleaning khong can doan.
+
+    Returns:
+        Dictionary mapping field_name -> so record co field nay.
+    """
+    field_counts = {field: 0 for field in REQUIRED_FIELDS_FOR_CLEANING}
+
+    for record in records:
+        for field in REQUIRED_FIELDS_FOR_CLEANING:
+            value = getattr(record, field, None)
+            if value is not None:
+                if isinstance(value, str):
+                    field_counts[field] += 1 if value else 0
+                elif isinstance(value, list):
+                    field_counts[field] += 1 if value else 0
+                else:
+                    field_counts[field] += 1
+
+    return field_counts
+
+
+def generate_audit_report(
+    records: list[PaperRecord],
+    raw_path: Path,
+    record_path: Path,
+    max_samples: int = 3,
+) -> AuditReport:
+    """Tao bao cao audit de ban giao cho cleaning team.
+
+    Args:
+        records: List PaperRecord.
+        raw_path: Duong dan toi raw API response.
+        record_path: Duong dan toi parsed records JSON.
+        max_samples: So luong sample records trong bao cao.
+
+    Returns:
+        AuditReport chua thong tin day du de bàn giao.
+    """
+    valid_records, issues = validate_raw_records(records)
+    field_counts = verify_field_completeness(records)
+
+    # Lay mau records dai dien
+    sample_records = records[:max_samples]
+
+    report = AuditReport(
+        total_records=len(records),
+        valid_records=len(valid_records),
+        records_with_issues=len(records) - len(valid_records),
+        issues=issues,
+        sample_records=sample_records,
+        raw_path=raw_path,
+        record_path=record_path,
+    )
+
+    logger.info(f"Audit report: {len(valid_records)}/{len(records)} records valid, "
+                f"{len(issues)} issues found")
+    for field, count in field_counts.items():
+        coverage = (count / len(records) * 100) if records else 0
+        logger.info(f"  {field}: {count}/{len(records)} ({coverage:.1f}%)")
+
+    return report
+
+
+def print_audit_summary(report: AuditReport) -> None:
+    """In tom tat audit report ra console."""
+    print("\n" + "=" * 60)
+    print("CROSSREF INGESTION - AUDIT REPORT")
+    print("=" * 60)
+    print(f"\nTotal Records: {report.total_records}")
+    print(f"Valid Records: {report.valid_records}")
+    print(f"Records with Issues: {report.records_with_issues}")
+    print(f"\n--- Field Coverage ---")
+    for field in REQUIRED_FIELDS_FOR_CLEANING:
+        print(f"  {field}: available")
+
+    print(f"\n--- Sample Records (for cleaning team) ---")
+    for i, rec in enumerate(report.sample_records):
+        print(f"\n  Sample {i + 1}:")
+        print(f"    paper_id: {rec.paper_id}")
+        print(f"    title: {rec.title[:80]}..." if len(rec.title) > 80 else f"    title: {rec.title}")
+        print(f"    authors: {', '.join(rec.authors[:3])}{'...' if len(rec.authors) > 3 else ''}")
+        print(f"    published: {rec.published}")
+        print(f"    abs_url: {rec.abs_url}")
+
+    if report.issues:
+        print(f"\n--- Issues Found ({len(report.issues)}) ---")
+        for issue in report.issues[:10]:
+            print(f"  [{issue.issue_type}] {issue.message}")
+        if len(report.issues) > 10:
+            print(f"  ... and {len(report.issues) - 10} more issues")
+
+    print("\n--- Handoff Info for Cleaning Team ---")
+    print(f"  Raw API Response: {report.raw_path}")
+    print(f"  Parsed Records: {report.record_path}")
+    print(f"\n  Records are ready for cleaning.build_clean_dataframe()")
+    print("=" * 60 + "\n")
+
+
+def run_validation_and_audit(settings: Settings) -> AuditReport:
+    """Chay validation day du va tao audit report.
+
+    Day la entry point cho checkpoint 2 - goi sau khi fetch_source_records.
+
+    Args:
+        settings: Cau hinh pipeline.
+
+    Returns:
+        AuditReport day du.
+    """
+    # Load records tu file (hoac fetch moi)
+    if settings.paths.raw_records_json.exists():
+        records = load_raw_records(settings.paths.raw_records_json)
+    else:
+        records = fetch_source_records(settings)
+
+    report = generate_audit_report(
+        records=records,
+        raw_path=settings.paths.raw_api_response,
+        record_path=settings.paths.raw_records_json,
+    )
+
+    print_audit_summary(report)
+
+    return report
