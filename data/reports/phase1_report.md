@@ -10,13 +10,13 @@
 
 | Metric | Baseline |
 |---|---:|
-| retrieval_hit_rate | 1.0000 |
-| mean_token_f1 | 1.0000 |
-| judge_accuracy | 1.0000 |
-| mean_judge_score | 5 |
+| retrieval_hit_rate | 0.8000 |
+| mean_token_f1 | 0.4821 |
+| judge_accuracy | 0.5000 |
+| mean_judge_score | 2.8000 |
 
 ## Observability
 
-- Quality: **PASS**
+- Quality: **N/A**
 - Fresh: **True**
 - Stale rows: 0
