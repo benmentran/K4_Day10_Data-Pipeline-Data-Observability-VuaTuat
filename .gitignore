@@ -7,3 +7,4 @@ lab/
 **/__pycache__/
 .kilo/
 .mypy_cache/
+data/chroma/*
