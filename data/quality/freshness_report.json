@@ -8,7 +8,7 @@
   "stale_ratio": 0.0,
   "max_age_days": 175,
   "min_age_days": 5,
-  "generated_at": "2026-08-06T10:41:26.108109+00:00",
-  "artifact_path": "F:\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\quality\\freshness_report.json",
+  "generated_at": "2026-08-06T15:38:02.176800+00:00",
+  "artifact_path": "/home/angwindy/Dev/Vin/Lab/K4_Day10_Data-Pipeline-Data-Observability-VuaTuat/data/quality/freshness_report.json",
   "detail": ""
 }

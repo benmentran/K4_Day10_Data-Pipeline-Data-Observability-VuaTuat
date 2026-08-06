@@ -1,6 +1,6 @@
 # Corruption, Repair & Comparison Report
 
-Generated: 2026-08-06T12:25:39.854152+00:00
+Generated: 2026-08-06T15:59:01.513143+00:00
 
 Three states of the same corpus, evaluated with the **same frozen test set** and the same retrieval/judge configuration. Only the data changes between states, so every metric difference below is attributable to data quality.
 

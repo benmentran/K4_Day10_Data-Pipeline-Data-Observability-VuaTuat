@@ -1,6 +1,6 @@
 {
   "report_name": "repaired_quality",
-  "generated_at": "2026-08-06T12:25:39.590036+00:00",
+  "generated_at": "2026-08-06T15:59:01.487553+00:00",
   "total_rows": 24,
   "total_checks": 10,
   "passed_checks": 10,
@@ -89,5 +89,5 @@
   ],
   "failed_checks": [],
   "warnings": [],
-  "artifact_path": "C:\\Users\\ADMIN\\Dropbox\\PC\\Desktop\\LabVin\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\quality\\repaired_quality.json"
+  "artifact_path": "/home/angwindy/Dev/Vin/Lab/K4_Day10_Data-Pipeline-Data-Observability-VuaTuat/data/quality/repaired_quality.json"
 }

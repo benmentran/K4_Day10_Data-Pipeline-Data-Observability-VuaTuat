@@ -30,22 +30,22 @@
 
 | Hoạt động                         | Thành viên/module được hỗ trợ | Kết quả                    |
 | ------------------------------------ | ------------------------------------ | ---------------------------- |
-| Review code cleaning.py | Thành viên khác | Đảm bảo interface tương thích |
+| Test contract cleaning | Module cleaning | `script/validate_clean_contract.py` chạy pass |
 
 ## 3. Kết quả theo vai trò
 
 | Nhiệm vụ đã thực hiện | File/hàm/artifact liên quan | Kết quả bàn giao       | Cách xác minh         |
 | --------------------------- | ----------------------------- | ------------------------- | ----------------------- |
-| Fetch Crossref API | `src/ingestion/crossref.py::fetch_source_records()` | 24 records từ API | `script/fetch_crossref.py` output |
+| Fetch Crossref API | `src/ingestion/crossref.py::fetch_source_records()` | 24 records từ API | `script/run_phase1.py` output |
 | Parse API response | `src/ingestion/crossref.py::parse_crossref_payload()` | List[PaperRecord] với 11 fields | Unit tests pass |
-| Lưu raw response | API JSON → `data/raw/crossref_response.json` | 226.7 KB raw data | File exists, verified |
-| Lưu parsed records | Parse → `data/raw/crossref_records.json` | 55.0 KB parsed data | JSON schema valid |
+| Lưu raw response | API JSON → `data/raw/crossref_response.json` | 226.7 KB raw data | File exists |
+| Lưu parsed records | Parse → `data/raw/crossref_records.json` | 24 records parsed | JSON schema valid |
 | Validate records | `validate_raw_records()` | 24/24 valid, 9 warnings | Audit report generated |
 | Generate audit report | `generate_audit_report()` | Coverage metrics, sample records | Console output verified |
 
 **Output cụ thể:**
-- Raw API Response: `data/raw/crossref_response.json` (226,191 bytes)
-- Parsed Records: `data/raw/crossref_records.json` (54,783 bytes)
+- Raw API Response: `data/raw/crossref_response.json` (226.7 KB)
+- Parsed Records: `data/raw/crossref_records.json` (24 records)
 - Audit Report với field coverage:
   - paper_id: 24/24 (100.0%)
   - title: 24/24 (100.0%)
@@ -108,19 +108,15 @@ Thu thập dữ liệu từ Crossref API với các yêu cầu:
 ### Cách xác minh
 
 ```bash
-# Run fetch script
-/home/angwindy/miniconda3/envs/vin/bin/python script/fetch_crossref.py
+# Run phase1 pipeline (end-to-end)
+PYTHONPATH=src python script/run_phase1.py
 
-# Run unit tests
-/home/angwindy/miniconda3/envs/vin/bin/python test_crossref.py
-
-# Validate JSON schema
-python -c "import json; records = json.load(open('data/raw/crossref_records.json')); print(f'Total: {len(records)}')"
+# Output: "Baseline complete: 24 clean records"
 ```
 
 - **Kết quả mong đợi:** 24 records với đầy đủ 11 fields, valid dates
 - **Kết quả thực tế:** 24 records, 100% field coverage trừ categories (62.5%)
-- **Artifact/log:** `data/raw/crossref_records.json`, `data/raw/crossref_response.json`
+- **Artifact/log:** `data/raw/crossref_records.json`, `data/reports/phase1_report.md`
 
 ## 5. Một quyết định kỹ thuật quan trọng
 
@@ -180,23 +176,23 @@ python -c "import json; records = json.load(open('data/raw/crossref_records.json
 Giải thích ngắn gọn bằng lời của bạn:
 
 1. **Dữ liệu đi từ Crossref đến vector index như thế nào?**
-   Crossref API → Raw JSON response → Parse to PaperRecord → Validate → Clean to DataFrame → Embed text_for_embedding → Store in ChromaDB vector index
+   Crossref API → Raw JSON (`data/raw/crossref_response.json`) → Parse to PaperRecord (`data/raw/crossref_records.json`) → Validate → Clean to DataFrame (`data/clean/papers_clean.csv`) → Embed text_for_embedding với MiniLM → Store in ChromaDB collection `papers-baseline`.
 
 2. **Evaluation set và ground-truth document IDs dùng để đo retrieval/answer quality ra sao?**
-   Test set chứa query và expected document IDs. Khi RAG agent query, vector search trả về top-k documents. So sánh retrieved IDs với ground-truth để tính hit_rate, F1, judge_score.
+   Test set (`data/eval/test_set.json`) chứa 10 questions, mỗi question có query và expected paper_id (ground-truth). Khi RAG agent query, vector search trả về top-k documents từ Chroma. So sánh retrieved IDs với ground-truth để tính hit_rate (q có match không), token F1 (answer overlap), judge_score (LLM judge).
 
 3. **Quality checks khác freshness monitoring ở điểm nào trong bài lab?**
-   Quality checks đo lường data quality (missing fields, duplicates, invalid formats). Freshness monitoring đo lường data age (days since last update). Cả hai đều là signals trong observability dashboard.
+   - **Quality checks** (10 checks): đo lường structural data quality (missing fields, duplicates, NaN, text length)
+   - **Freshness monitoring**: đo lường temporal data quality (age_days > threshold, oldest_published date)
+   - Cả hai đều là signals trong observability, xuất hiện trong `data/reports/phase1_report.md` (section Observability) và `data/reports/corruption_report.md` (section 4).
 
 4. **Vì sao phải dùng cùng test set cho baseline, corrupted và repaired?**
-   Để đảm bảo comparison fair và có ý nghĩa. Nếu dùng test sets khác nhau, không thể biết metric changes là do corruption/repair hay do test set differences.
+   Để đảm bảo comparison fair và có ý nghĩa. Nếu dùng test sets khác nhau, không thể biết metric changes là do corruption/repair hay do test set differences. Frozen test set đảm bảo cùng 10 questions được hỏi trên cả 3 states.
 
 5. **Repair được xem là thành công dựa trên artifact và metric nào?**
-   Repair thành công khi:
-   - Corrupted records được fix (re-fetch hoặc remove)
-   - Quality signals phục hồi về baseline levels
-   - Retrieval metrics (hit_rate, F1) phục hồi ≥ 90% baseline
-   - Artifacts: `data/clean/cleaned.csv`, `data/eval/repair_report.json`
+   - **Artifacts**: `data/clean/papers_clean_repaired.csv` (24 rows, identical paper_id set với baseline), `data/reports/corruption_report.md`
+   - **Metrics phục hồi**: retrieval_hit_rate = 0.8 (baseline), mean_token_f1 = 0.4821, judge_accuracy = 0.5, mean_judge_score = 2.8
+   - **Quality signals phục hồi**: quality status PASS, is_fresh True, stale_rows = 0
 
 ## 8. Phân tích kết quả
 
@@ -204,27 +200,29 @@ Giải thích ngắn gọn bằng lời của bạn:
 
 | Metric/signal          | Baseline | Corrupted | Repaired | Nhận xét của cá nhân |
 | ---------------------- | -------: | --------: | -------: | ------------------------- |
-| `retrieval_hit_rate` | [ ] | [ ] | [ ] | [Chưa chạy phase 2-4] |
-| `mean_token_f1`      | [ ] | [ ] | [ ] | [Chưa chạy phase 2-4] |
-| `judge_accuracy`     | [ ] | [ ] | [ ] | [Chưa chạy phase 2-4] |
-| `mean_judge_score`   | [ ] | [ ] | [ ] | [Chưa chạy phase 2-4] |
-| Quality checks         | 24/24 valid | [ ] | [ ] | 100% records valid sau ingestion |
-| Freshness status       | 24 records | [ ] | [ ] | 2026 data (fresh) |
+| `retrieval_hit_rate` | 0.8000 | 0.8000 | 0.8000 | Không thay đổi - top_k=4 / 24 docs vẫn tìm được paper dù summary bị corrupt |
+| `mean_token_f1`      | 0.4821 | 0.3035 | 0.4821 | Degrade -37.1%, phục hồi hoàn toàn sau repair |
+| `judge_accuracy`     | 0.5000 | 0.3000 | 0.5000 | Degrade -40.0%, phục hồi hoàn toàn |
+| `mean_judge_score`   | 2.8000 | 2.2000 | 2.8000 | Degrade -21.4%, phục hồi hoàn toàn |
+| Quality checks         | 10/10 PASS | FAIL (3 checks) | 10/10 PASS | paper_id_unique, summary_min_length, freshness_age_days fail khi corrupt |
+| Freshness status       | is_fresh=True | is_fresh=False | is_fresh=True | stale_rows: 0 → 4 → 0 (4 records bị set published=2000-01-01) |
 
 ### Kết luận từ số liệu
 
 **Chuỗi 1: Data corruption → quality/freshness signal thay đổi → agent metric thay đổi**
-- [Chưa thực hiện corruption simulation]
+- Corruption scenarios (drop_latest_record, blank_summary, inject_summary_noise, duplicate_record, truncate_title, stale_published_date) → quality status FAIL (paper_id_unique fail do duplicate, summary_min_length fail do blank, freshness_age_days fail do stale dates), is_fresh=False, stale_rows=4
+- → Agent metrics: mean_token_f1 0.4821 → 0.3035, judge_accuracy 0.5 → 0.3, mean_judge_score 2.8 → 2.2
 
 **Chuỗi 2: Repair action → quality/freshness signal phục hồi → agent metric phục hồi**
-- [Chưa thực hiện repair]
+- Repair (rebuild from `data/raw/crossref_records.json`) → quality status PASS (10/10 checks), is_fresh=True, stale_rows=0
+- → Agent metrics phục hồi: mean_token_f1 0.4821, judge_accuracy 0.5, mean_judge_score 2.8
 
 **Corruption nào ảnh hưởng rõ nhất và vì sao?**
-- [Chưa thực hiện corruption]
+- `stale_published_date` (4 records) và `inject_summary_noise` (4 records) có impact lớn nhất. 
+- Lý do: stale dates trip freshness monitor và corrupt answer của date-questions; noise trong summary đẩy document ra khỏi embedding space của question, làm giảm F1 từ 0.82 → 0.04 (q4).
 
 **Kết quả nào khác với kỳ vọng ban đầu?**
-- Category coverage thấp hơn mong đợi (62.5% thay vì 100%)
-- Đã xử lý bằng cách dùng journal name làm fallback
+- `retrieval_hit_rate` không thay đổi (0.8 cả 3 states). Kỳ vọng ban đầu là hit_rate sẽ giảm khi corrupt. Thực tế: với top_k=4 / 24 docs, kể cả khi summary bị blank, title vẫn match với query nên hit_rate giữ nguyên. q7 thậm chí flip từ MISS → hit (shorter embedding text raises title similarity).
 
 ## 9. Điều học được và hướng cải thiện
 
@@ -234,14 +232,16 @@ Giải thích ngắn gọn bằng lời của bạn:
 
 2. **Validation nên phân biệt critical errors và warnings.** Records với warnings vẫn có thể sử dụng được nếu core fields đầy đủ.
 
-3. **Fallback logic quan trọng cho data quality.** Khi primary field không có, dùng secondary field (journal name → category) vẫn tốt hơn empty string.
+3. **Frozen test set là thiết yếu cho controlled comparison.** Cùng test set đảm bảo metric changes là do data changes, không phải do test set randomness.
+
+4. **Repair provenance quan trọng.** Repaired dataset phải rebuild từ raw snapshot (frozen tại C2), không đọc lại corrupted CSV. Đảm bảo reproducibility và tránh circular dependency.
 
 ### Nếu có thêm thời gian
 
 Cải thiện category extraction bằng cách:
 - Query Crossref subject API endpoint riêng
-- Hoặc dùng AI để classify papers từ title/summary
-- Metric: Category coverage target ≥ 90%
+- Hoặc dùng LLM để classify papers từ title/summary
+- Metric: Category coverage target ≥ 90% (hiện tại 62.5%)
 
 ## 10. Cam kết của thành viên
 

@@ -1,6 +1,6 @@
 {
   "report_name": "baseline_quality",
-  "generated_at": "2026-08-06T10:41:26.102501+00:00",
+  "generated_at": "2026-08-06T15:38:02.171137+00:00",
   "total_rows": 24,
   "total_checks": 10,
   "passed_checks": 10,
@@ -89,5 +89,5 @@
   ],
   "failed_checks": [],
   "warnings": [],
-  "artifact_path": "F:\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\quality\\baseline_quality.json"
+  "artifact_path": "/home/angwindy/Dev/Vin/Lab/K4_Day10_Data-Pipeline-Data-Observability-VuaTuat/data/quality/baseline_quality.json"
 }

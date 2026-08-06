@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-08-06T12:13:18.167185+00:00",
+  "generated_at": "2026-08-06T15:47:28.992595+00:00",
   "run_date": "2026-08-06",
   "seed": 42,
   "input_rows": 24,
@@ -117,7 +117,7 @@
     "truncate_title": 3
   },
   "frozen_test_set": {
-    "path": "C:\\Users\\ADMIN\\Dropbox\\PC\\Desktop\\LabVin\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\eval\\test_set.json",
+    "path": "/home/angwindy/Dev/Vin/Lab/K4_Day10_Data-Pipeline-Data-Observability-VuaTuat/data/eval/test_set.json",
     "questions": 10,
     "ground_truth_paper_ids": [
       "074c6be8adb0d50d",

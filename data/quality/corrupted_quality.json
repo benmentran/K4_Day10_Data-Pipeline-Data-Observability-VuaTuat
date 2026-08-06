@@ -1,6 +1,6 @@
 {
   "report_name": "corrupted_quality",
-  "generated_at": "2026-08-06T12:19:31.870553+00:00",
+  "generated_at": "2026-08-06T15:53:22.711672+00:00",
   "total_rows": 26,
   "total_checks": 10,
   "passed_checks": 7,
@@ -93,5 +93,5 @@
     "freshness_age_days"
   ],
   "warnings": [],
-  "artifact_path": "C:\\Users\\ADMIN\\Dropbox\\PC\\Desktop\\LabVin\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\quality\\corrupted_quality.json"
+  "artifact_path": "/home/angwindy/Dev/Vin/Lab/K4_Day10_Data-Pipeline-Data-Observability-VuaTuat/data/quality/corrupted_quality.json"
 }
