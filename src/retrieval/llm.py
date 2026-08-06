@@ -50,4 +50,11 @@ def build_llm(settings: Settings, temperature: float = 0.0):
             base_url=settings.custom_llm_base_url,
             temperature=temperature,
         )
+    if provider == "grok":
+        return ChatOpenAI(
+            model=settings.model_name,
+            api_key=settings.grok_api_key,
+            base_url=settings.grok_base_url,
+            temperature=temperature,
+        )
     raise RuntimeError(f"Unsupported LLM provider: {settings.llm_provider}")

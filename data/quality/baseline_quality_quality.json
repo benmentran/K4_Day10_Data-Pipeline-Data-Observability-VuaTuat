@@ -1,0 +1,93 @@
+{
+  "report_name": "baseline_quality",
+  "generated_at": "2026-08-06T10:11:44.677011+00:00",
+  "total_rows": 24,
+  "total_checks": 10,
+  "passed_checks": 10,
+  "success": true,
+  "checks": [
+    {
+      "name": "required_columns_present",
+      "severity": "error",
+      "success": true,
+      "observed": 14,
+      "expected": 10,
+      "detail": ""
+    },
+    {
+      "name": "row_count_minimum",
+      "severity": "error",
+      "success": true,
+      "observed": 24,
+      "expected": ">= 20",
+      "detail": ""
+    },
+    {
+      "name": "paper_id_not_null",
+      "severity": "error",
+      "success": true,
+      "observed": 0,
+      "expected": 0,
+      "detail": ""
+    },
+    {
+      "name": "paper_id_unique",
+      "severity": "error",
+      "success": true,
+      "observed": 0,
+      "expected": 0,
+      "detail": ""
+    },
+    {
+      "name": "title_not_null",
+      "severity": "error",
+      "success": true,
+      "observed": 0,
+      "expected": 0,
+      "detail": ""
+    },
+    {
+      "name": "summary_min_length",
+      "severity": "error",
+      "success": true,
+      "observed": 0,
+      "expected": 0,
+      "detail": ""
+    },
+    {
+      "name": "text_for_embedding_not_null",
+      "severity": "error",
+      "success": true,
+      "observed": 0,
+      "expected": 0,
+      "detail": ""
+    },
+    {
+      "name": "no_nan_in_index_columns",
+      "severity": "error",
+      "success": true,
+      "observed": 0,
+      "expected": 0,
+      "detail": ""
+    },
+    {
+      "name": "freshness_age_days",
+      "severity": "error",
+      "success": true,
+      "observed": 0,
+      "expected": 0,
+      "detail": "Bai cu nhat 175 ngay"
+    },
+    {
+      "name": "categories_completeness",
+      "severity": "warning",
+      "success": true,
+      "observed": 0,
+      "expected": 0,
+      "detail": ""
+    }
+  ],
+  "failed_checks": [],
+  "warnings": [],
+  "artifact_path": "E:\\AI_thucchien\\lab\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\quality\\baseline_quality_quality.json"
+}
