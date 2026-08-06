@@ -1,0 +1,186 @@
+{
+  "input_rows": 24,
+  "output_rows": 22,
+  "rows_dropped": 4,
+  "duplicate_rows_added": 2,
+  "event_counts": {
+    "blank_summary": 4,
+    "drop_latest_record": 4,
+    "duplicate_record": 2,
+    "inject_summary_noise": 4,
+    "stale_published_date": 4,
+    "truncate_title": 4
+  },
+  "events": [
+    {
+      "type": "drop_latest_record",
+      "paper_id": "f604458c87fcc8ad",
+      "parameters": {
+        "published": "2026-08-01"
+      }
+    },
+    {
+      "type": "drop_latest_record",
+      "paper_id": "928eed655629ebac",
+      "parameters": {
+        "published": "2026-07-13"
+      }
+    },
+    {
+      "type": "drop_latest_record",
+      "paper_id": "de23fc4ac319930e",
+      "parameters": {
+        "published": "2026-07-10"
+      }
+    },
+    {
+      "type": "drop_latest_record",
+      "paper_id": "1ed7987631bdbdab",
+      "parameters": {
+        "published": "2026-07-03"
+      }
+    },
+    {
+      "type": "blank_summary",
+      "paper_id": "074c6be8adb0d50d",
+      "parameters": {
+        "before_chars": 2207,
+        "after_chars": 0
+      }
+    },
+    {
+      "type": "blank_summary",
+      "paper_id": "481228d3f394e0fd",
+      "parameters": {
+        "before_chars": 826,
+        "after_chars": 0
+      }
+    },
+    {
+      "type": "blank_summary",
+      "paper_id": "27868f5ca6e98bb5",
+      "parameters": {
+        "before_chars": 1527,
+        "after_chars": 0
+      }
+    },
+    {
+      "type": "blank_summary",
+      "paper_id": "34fdfff352385592",
+      "parameters": {
+        "before_chars": 1635,
+        "after_chars": 0
+      }
+    },
+    {
+      "type": "inject_summary_noise",
+      "paper_id": "c461d892c39f1eac",
+      "parameters": {
+        "noise_chars": 995
+      }
+    },
+    {
+      "type": "inject_summary_noise",
+      "paper_id": "f4651f690313c70a",
+      "parameters": {
+        "noise_chars": 995
+      }
+    },
+    {
+      "type": "inject_summary_noise",
+      "paper_id": "96350012ffd38f7e",
+      "parameters": {
+        "noise_chars": 995
+      }
+    },
+    {
+      "type": "inject_summary_noise",
+      "paper_id": "a15fdd1cbc9b64b4",
+      "parameters": {
+        "noise_chars": 995
+      }
+    },
+    {
+      "type": "truncate_title",
+      "paper_id": "b76704dbba47c1d6",
+      "parameters": {
+        "before": "Chatbot Hybrid Fatwa MUI Menggunakan Retrieval Augmented Generation dan Large Language Model",
+        "after": "Chatbot Hybr"
+      }
+    },
+    {
+      "type": "truncate_title",
+      "paper_id": "1bfcab7a72aced09",
+      "parameters": {
+        "before": "Hybrid Graph Neural Network and Large Language Model Framework for Robust Knowledge Graph Question Answering via Retrieval-Augmented Generation",
+        "after": "Hybrid Graph"
+      }
+    },
+    {
+      "type": "truncate_title",
+      "paper_id": "a41fb0e6fe6b2a9a",
+      "parameters": {
+        "before": "Adapting Large Language Models for Low-Resource Regulated Domains: A Fine-Tuning and Retrieval-Augmented Generation Approach to Insurance Information Delivery in Kenya",
+        "after": "Adapting Lar"
+      }
+    },
+    {
+      "type": "truncate_title",
+      "paper_id": "1db7704e371d083a",
+      "parameters": {
+        "before": "Speculative Retrieval-Augmented Generation for Cost-Efficient Large Language Model Inference",
+        "after": "Speculative "
+      }
+    },
+    {
+      "type": "stale_published_date",
+      "paper_id": "fbf09bbb2f1acd9e",
+      "parameters": {
+        "before": "2026-05-06",
+        "after": "2024-05-06",
+        "days_added_to_age": 730
+      }
+    },
+    {
+      "type": "stale_published_date",
+      "paper_id": "771a95bbbb7dc30e",
+      "parameters": {
+        "before": "2026-05-01",
+        "after": "2024-05-01",
+        "days_added_to_age": 730
+      }
+    },
+    {
+      "type": "stale_published_date",
+      "paper_id": "9008f0d1d3e157ce",
+      "parameters": {
+        "before": "2026-04-06",
+        "after": "2024-04-06",
+        "days_added_to_age": 730
+      }
+    },
+    {
+      "type": "stale_published_date",
+      "paper_id": "7e3933d4f7afadd2",
+      "parameters": {
+        "before": "2026-03-15",
+        "after": "2024-03-15",
+        "days_added_to_age": 730
+      }
+    },
+    {
+      "type": "duplicate_record",
+      "paper_id": "074c6be8adb0d50d",
+      "parameters": {
+        "copies_added": 1
+      }
+    },
+    {
+      "type": "duplicate_record",
+      "paper_id": "481228d3f394e0fd",
+      "parameters": {
+        "copies_added": 1
+      }
+    }
+  ]
+}

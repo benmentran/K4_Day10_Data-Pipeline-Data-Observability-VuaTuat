@@ -1,0 +1,36 @@
+{
+  "report_name": "corrupted_quality",
+  "status": "FAIL",
+  "total_rows": 22,
+  "checks": [
+    {
+      "name": "row_count_positive",
+      "status": "PASS"
+    },
+    {
+      "name": "paper_id_not_null",
+      "status": "PASS"
+    },
+    {
+      "name": "paper_id_unique",
+      "status": "FAIL"
+    },
+    {
+      "name": "title_not_null",
+      "status": "PASS"
+    },
+    {
+      "name": "summary_min_100_chars",
+      "status": "FAIL"
+    },
+    {
+      "name": "freshness_within_threshold",
+      "status": "FAIL"
+    }
+  ],
+  "failed_checks": [
+    "paper_id_unique",
+    "summary_min_100_chars",
+    "freshness_within_threshold"
+  ]
+}

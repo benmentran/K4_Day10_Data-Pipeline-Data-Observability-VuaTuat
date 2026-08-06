@@ -6,7 +6,7 @@ from datetime import UTC, datetime
 import pandas as pd
 
 from core.config import Settings
-from core.utils import compact_join, ensure_parent, write_csv, write_json
+from core.utils import compact_join, ensure_parent, normalize_whitespace, write_csv, write_json
 from ingestion.crossref import PaperRecord
 
 
@@ -28,42 +28,57 @@ def _parse_date(date_str: str) -> datetime | None:
     return None
 
 
-def build_clean_dataframe(records: list[PaperRecord], run_date: datetime, settings: Settings) -> pd.DataFrame:
+def _normalize_id(value: str) -> str:
+    return re.sub(r"^https?://(?:dx\.)?doi\.org/", "", value.strip(), flags=re.I).lower()
+
+
+def build_clean_dataframe(
+    records: list[PaperRecord], run_date: datetime, settings: Settings | None = None
+) -> pd.DataFrame:
     rows = []
     for rec in records:
-        title = _strip_html_tags(rec.title)
-        summary = _strip_html_tags(rec.summary)
+        paper_id = _normalize_id(rec.paper_id)
+        title = normalize_whitespace(_strip_html_tags(rec.title))
+        summary = normalize_whitespace(_strip_html_tags(rec.summary))
 
         if not title:
             continue
         if len(summary.strip()) < 100:
             continue
 
-        authors_joined = compact_join(rec.authors, sep=", ")
-        categories_joined = compact_join(rec.categories, sep=", ")
+        authors_joined = compact_join((normalize_whitespace(x) for x in rec.authors if x), sep=", ") or "unknown"
+        categories_joined = compact_join((normalize_whitespace(x) for x in rec.categories if x), sep=", ") or "unknown"
 
         published_date = _parse_date(rec.published)
-        if published_date is not None:
-            age_days = (run_date - published_date).days
-        else:
-            age_days = -1
+        if not paper_id or published_date is None:
+            continue
+        comparable_run_date = run_date if run_date.tzinfo else run_date.replace(tzinfo=UTC)
+        age_days = max(0, (comparable_run_date.date() - published_date.date()).days)
+        published = published_date.date().isoformat()
+        updated_date = _parse_date(rec.updated)
+        updated = updated_date.date().isoformat() if updated_date else ""
 
-        text_for_embedding = f"Title: {title} | Authors: {authors_joined} | Summary: {summary}"
+        primary_category = normalize_whitespace(rec.primary_category) or "unknown"
+        text_for_embedding = "\n".join(
+            [f"Title: {title}", f"Authors: {authors_joined}", f"Categories: {categories_joined}",
+             f"Published: {published}", f"Summary: {summary}"]
+        )
 
         rows.append(
             {
-                "paper_id": rec.paper_id,
+                "paper_id": paper_id,
                 "title": title,
                 "summary": summary,
                 "authors_joined": authors_joined,
                 "categories_joined": categories_joined,
-                "primary_category": rec.primary_category,
-                "published": rec.published,
-                "updated": rec.updated,
+                "primary_category": primary_category,
+                "published": published,
+                "updated": updated,
                 "age_days": age_days,
-                "abs_url": rec.abs_url,
-                "pdf_url": rec.pdf_url,
-                "comment": rec.comment,
+                "summary_chars": len(summary),
+                "abs_url": normalize_whitespace(rec.abs_url),
+                "pdf_url": normalize_whitespace(rec.pdf_url),
+                "comment": normalize_whitespace(rec.comment),
                 "text_for_embedding": text_for_embedding,
             }
         )
@@ -73,12 +88,14 @@ def build_clean_dataframe(records: list[PaperRecord], run_date: datetime, settin
     if df.empty:
         return df
 
-    df = df.drop_duplicates(subset=["paper_id"])
-    df = df.sort_values("age_days", ascending=True).reset_index(drop=True)
+    df = df.sort_values(["published", "paper_id"], ascending=[False, True])
+    df = df.drop_duplicates(subset=["paper_id"], keep="first").reset_index(drop=True)
+    df = df.fillna("")
 
-    ensure_parent(settings.paths.clean_csv)
-    write_csv(df, settings.paths.clean_csv)
-    ensure_parent(settings.paths.clean_json)
-    write_json(settings.paths.clean_json, df.to_dict(orient="records"))
+    if settings is not None:
+        ensure_parent(settings.paths.clean_csv)
+        write_csv(df, settings.paths.clean_csv)
+        ensure_parent(settings.paths.clean_json)
+        write_json(settings.paths.clean_json, df.to_dict(orient="records"))
 
     return df
