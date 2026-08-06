@@ -1,0 +1,14 @@
+{
+  "latest_published": "2026-08-01",
+  "oldest_published": "2026-02-12",
+  "stale_rows": 0,
+  "total_rows": 24,
+  "is_fresh": true,
+  "threshold_days": 180,
+  "stale_ratio": 0.0,
+  "max_age_days": 175,
+  "min_age_days": 5,
+  "generated_at": "2026-08-06T12:25:39.594038+00:00",
+  "artifact_path": "C:\\Users\\ADMIN\\Dropbox\\PC\\Desktop\\LabVin\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\quality\\repaired_freshness.json",
+  "detail": ""
+}

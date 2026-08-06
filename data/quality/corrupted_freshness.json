@@ -1,8 +1,14 @@
 {
-  "latest_published": "2026-07-02",
-  "oldest_published": "2024-03-15",
+  "latest_published": "2026-07-10",
+  "oldest_published": "2000-01-01",
   "stale_rows": 4,
-  "total_rows": 22,
+  "total_rows": 26,
+  "is_fresh": false,
   "threshold_days": 180,
-  "is_fresh": false
+  "stale_ratio": 0.1538,
+  "max_age_days": 9714,
+  "min_age_days": 27,
+  "generated_at": "2026-08-06T12:19:31.876542+00:00",
+  "artifact_path": "C:\\Users\\ADMIN\\Dropbox\\PC\\Desktop\\LabVin\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\quality\\corrupted_freshness.json",
+  "detail": ""
 }

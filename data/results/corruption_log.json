@@ -1,64 +1,245 @@
 {
+  "generated_at": "2026-08-06T12:13:18.167185+00:00",
+  "run_date": "2026-08-06",
+  "seed": 42,
   "input_rows": 24,
-  "output_rows": 22,
-  "rows_dropped": 4,
-  "duplicate_rows_added": 2,
+  "output_rows": 26,
+  "rows_dropped": 1,
+  "duplicate_rows_added": 3,
+  "documents_corrupted": 19,
+  "scenarios": {
+    "drop_latest_record": {
+      "description": "Delete the newest record entirely (silent data loss at the source).",
+      "paper_ids": [
+        "f604458c87fcc8ad"
+      ],
+      "count": 1,
+      "frozen_test_set_paper_ids": [
+        "f604458c87fcc8ad"
+      ],
+      "frozen_test_set_question_ids": [
+        "q1"
+      ]
+    },
+    "blank_summary": {
+      "description": "Blank the summary so the document embeds on metadata only.",
+      "paper_ids": [
+        "de23fc4ac319930e",
+        "27868f5ca6e98bb5",
+        "9008f0d1d3e157ce",
+        "1d0dd17401fcab24"
+      ],
+      "count": 4,
+      "frozen_test_set_paper_ids": [
+        "de23fc4ac319930e",
+        "27868f5ca6e98bb5"
+      ],
+      "frozen_test_set_question_ids": [
+        "q3",
+        "q7"
+      ]
+    },
+    "inject_summary_noise": {
+      "description": "Prepend unrelated content to the summary and append random characters to text_for_embedding.",
+      "paper_ids": [
+        "1ed7987631bdbdab",
+        "c461d892c39f1eac",
+        "3426007f8f031964",
+        "1db7704e371d083a"
+      ],
+      "count": 4,
+      "frozen_test_set_paper_ids": [
+        "1ed7987631bdbdab",
+        "c461d892c39f1eac"
+      ],
+      "frozen_test_set_question_ids": [
+        "q4",
+        "q9"
+      ]
+    },
+    "duplicate_record": {
+      "description": "Append a byte-identical copy of the row, paper_id included.",
+      "paper_ids": [
+        "074c6be8adb0d50d",
+        "f4651f690313c70a",
+        "bc356736d313c037"
+      ],
+      "count": 3,
+      "frozen_test_set_paper_ids": [
+        "074c6be8adb0d50d",
+        "f4651f690313c70a"
+      ],
+      "frozen_test_set_question_ids": [
+        "q10",
+        "q5"
+      ]
+    },
+    "truncate_title": {
+      "description": "Truncate the title to a fragment.",
+      "paper_ids": [
+        "481228d3f394e0fd",
+        "fbf09bbb2f1acd9e",
+        "7e3933d4f7afadd2"
+      ],
+      "count": 3,
+      "frozen_test_set_paper_ids": [
+        "481228d3f394e0fd"
+      ],
+      "frozen_test_set_question_ids": [
+        "q6"
+      ]
+    },
+    "stale_published_date": {
+      "description": "Rewrite published to 2000-01-01 to defeat the freshness check.",
+      "paper_ids": [
+        "928eed655629ebac",
+        "34fdfff352385592",
+        "771a95bbbb7dc30e",
+        "b76704dbba47c1d6"
+      ],
+      "count": 4,
+      "frozen_test_set_paper_ids": [
+        "928eed655629ebac",
+        "34fdfff352385592"
+      ],
+      "frozen_test_set_question_ids": [
+        "q2",
+        "q8"
+      ]
+    }
+  },
   "event_counts": {
     "blank_summary": 4,
-    "drop_latest_record": 4,
-    "duplicate_record": 2,
+    "drop_latest_record": 1,
+    "duplicate_record": 3,
     "inject_summary_noise": 4,
     "stale_published_date": 4,
-    "truncate_title": 4
+    "truncate_title": 3
+  },
+  "frozen_test_set": {
+    "path": "C:\\Users\\ADMIN\\Dropbox\\PC\\Desktop\\LabVin\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\eval\\test_set.json",
+    "questions": 10,
+    "ground_truth_paper_ids": [
+      "074c6be8adb0d50d",
+      "1ed7987631bdbdab",
+      "27868f5ca6e98bb5",
+      "34fdfff352385592",
+      "481228d3f394e0fd",
+      "928eed655629ebac",
+      "c461d892c39f1eac",
+      "de23fc4ac319930e",
+      "f4651f690313c70a",
+      "f604458c87fcc8ad"
+    ],
+    "corrupted_ground_truth_paper_ids": [
+      "074c6be8adb0d50d",
+      "1ed7987631bdbdab",
+      "27868f5ca6e98bb5",
+      "34fdfff352385592",
+      "481228d3f394e0fd",
+      "928eed655629ebac",
+      "c461d892c39f1eac",
+      "de23fc4ac319930e",
+      "f4651f690313c70a",
+      "f604458c87fcc8ad"
+    ],
+    "overlap_count": 10,
+    "overlap_ratio": 1.0,
+    "scenarios_without_test_set_overlap": [],
+    "questions_affected": [
+      {
+        "question_id": "q1",
+        "question": "Who are the authors of 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-A...'?",
+        "paper_id": "f604458c87fcc8ad",
+        "scenario": "drop_latest_record"
+      },
+      {
+        "question_id": "q2",
+        "question": "When was 'JADE-Plus: A Multimodal Agentic Retrieval-Augmented Generati...' published?",
+        "paper_id": "928eed655629ebac",
+        "scenario": "stale_published_date"
+      },
+      {
+        "question_id": "q3",
+        "question": "What category/journal is 'Retrieval-Augmented Large-Language-Model-Based Time-Series F...' published in?",
+        "paper_id": "de23fc4ac319930e",
+        "scenario": "blank_summary"
+      },
+      {
+        "question_id": "q4",
+        "question": "What is the main contribution of 'Does retrieval-augmented generation impact medical students\u2019...'?",
+        "paper_id": "1ed7987631bdbdab",
+        "scenario": "inject_summary_noise"
+      },
+      {
+        "question_id": "q5",
+        "question": "What is the primary application of the method described in 'An Agentic AI System for Roof Design Compliance Using Comput...'?",
+        "paper_id": "074c6be8adb0d50d",
+        "scenario": "duplicate_record"
+      },
+      {
+        "question_id": "q6",
+        "question": "What methodology does 'Microsoft Azure artificial intelligence / machine learning h...' employ?",
+        "paper_id": "481228d3f394e0fd",
+        "scenario": "truncate_title"
+      },
+      {
+        "question_id": "q7",
+        "question": "Who are the authors of 'Hi\u2010 RAG : A Hierarchical Retrieval\u2010Augmented Generation Fram...'?",
+        "paper_id": "27868f5ca6e98bb5",
+        "scenario": "blank_summary"
+      },
+      {
+        "question_id": "q8",
+        "question": "When was 'The Age of Autonomous Agents: A Bibliometric Review of Agent...' published?",
+        "paper_id": "34fdfff352385592",
+        "scenario": "stale_published_date"
+      },
+      {
+        "question_id": "q9",
+        "question": "What category/journal is 'Retrieval-Augmented Generation (RAG), Generative AI, and Age...' published in?",
+        "paper_id": "c461d892c39f1eac",
+        "scenario": "inject_summary_noise"
+      },
+      {
+        "question_id": "q10",
+        "question": "What is the main contribution of '\u0421\u043d\u0438\u0436\u0435\u043d\u0438\u0435 \u0440\u0438\u0441\u043a\u043e\u0432 \u043f\u0440\u0438\u043c\u0435\u043d\u0435\u043d\u0438\u044f LLM (Large Language Model) \u0432 \u0441\u0444\u0435\u0440...'?",
+        "paper_id": "f4651f690313c70a",
+        "scenario": "duplicate_record"
+      }
+    ]
   },
   "events": [
     {
       "type": "drop_latest_record",
       "paper_id": "f604458c87fcc8ad",
+      "question_ids": [
+        "q1"
+      ],
+      "in_frozen_test_set": true,
       "parameters": {
         "published": "2026-08-01"
       }
     },
     {
-      "type": "drop_latest_record",
-      "paper_id": "928eed655629ebac",
-      "parameters": {
-        "published": "2026-07-13"
-      }
-    },
-    {
-      "type": "drop_latest_record",
+      "type": "blank_summary",
       "paper_id": "de23fc4ac319930e",
+      "question_ids": [
+        "q3"
+      ],
+      "in_frozen_test_set": true,
       "parameters": {
-        "published": "2026-07-10"
-      }
-    },
-    {
-      "type": "drop_latest_record",
-      "paper_id": "1ed7987631bdbdab",
-      "parameters": {
-        "published": "2026-07-03"
-      }
-    },
-    {
-      "type": "blank_summary",
-      "paper_id": "074c6be8adb0d50d",
-      "parameters": {
-        "before_chars": 2207,
-        "after_chars": 0
-      }
-    },
-    {
-      "type": "blank_summary",
-      "paper_id": "481228d3f394e0fd",
-      "parameters": {
-        "before_chars": 826,
+        "before_chars": 1945,
         "after_chars": 0
       }
     },
     {
       "type": "blank_summary",
       "paper_id": "27868f5ca6e98bb5",
+      "question_ids": [
+        "q7"
+      ],
+      "in_frozen_test_set": true,
       "parameters": {
         "before_chars": 1527,
         "after_chars": 0
@@ -66,118 +247,183 @@
     },
     {
       "type": "blank_summary",
-      "paper_id": "34fdfff352385592",
+      "paper_id": "9008f0d1d3e157ce",
+      "question_ids": [],
+      "in_frozen_test_set": false,
       "parameters": {
-        "before_chars": 1635,
+        "before_chars": 1687,
+        "after_chars": 0
+      }
+    },
+    {
+      "type": "blank_summary",
+      "paper_id": "1d0dd17401fcab24",
+      "question_ids": [],
+      "in_frozen_test_set": false,
+      "parameters": {
+        "before_chars": 1462,
         "after_chars": 0
       }
     },
     {
       "type": "inject_summary_noise",
+      "paper_id": "1ed7987631bdbdab",
+      "question_ids": [
+        "q4"
+      ],
+      "in_frozen_test_set": true,
+      "parameters": {
+        "unrelated_prefix_chars": 168,
+        "random_chars_appended_to_text_for_embedding": 320,
+        "preview": "Yesterday the weather forecast promised heavy rain, so we ca... + SbtpZV#gDcpJbnTMpP4a4Wxk..."
+      }
+    },
+    {
+      "type": "inject_summary_noise",
       "paper_id": "c461d892c39f1eac",
+      "question_ids": [
+        "q9"
+      ],
+      "in_frozen_test_set": true,
       "parameters": {
-        "noise_chars": 995
+        "unrelated_prefix_chars": 168,
+        "random_chars_appended_to_text_for_embedding": 320,
+        "preview": "Yesterday the weather forecast promised heavy rain, so we ca... + 8?49bZx&484s3h98p5Gv3pbn..."
       }
     },
     {
       "type": "inject_summary_noise",
-      "paper_id": "f4651f690313c70a",
+      "paper_id": "3426007f8f031964",
+      "question_ids": [],
+      "in_frozen_test_set": false,
       "parameters": {
-        "noise_chars": 995
+        "unrelated_prefix_chars": 168,
+        "random_chars_appended_to_text_for_embedding": 320,
+        "preview": "Yesterday the weather forecast promised heavy rain, so we ca... + ?MWi8I9OGEmd&H5CfSdkNv*i..."
       }
     },
     {
       "type": "inject_summary_noise",
-      "paper_id": "96350012ffd38f7e",
-      "parameters": {
-        "noise_chars": 995
-      }
-    },
-    {
-      "type": "inject_summary_noise",
-      "paper_id": "a15fdd1cbc9b64b4",
-      "parameters": {
-        "noise_chars": 995
-      }
-    },
-    {
-      "type": "truncate_title",
-      "paper_id": "b76704dbba47c1d6",
-      "parameters": {
-        "before": "Chatbot Hybrid Fatwa MUI Menggunakan Retrieval Augmented Generation dan Large Language Model",
-        "after": "Chatbot Hybr"
-      }
-    },
-    {
-      "type": "truncate_title",
-      "paper_id": "1bfcab7a72aced09",
-      "parameters": {
-        "before": "Hybrid Graph Neural Network and Large Language Model Framework for Robust Knowledge Graph Question Answering via Retrieval-Augmented Generation",
-        "after": "Hybrid Graph"
-      }
-    },
-    {
-      "type": "truncate_title",
-      "paper_id": "a41fb0e6fe6b2a9a",
-      "parameters": {
-        "before": "Adapting Large Language Models for Low-Resource Regulated Domains: A Fine-Tuning and Retrieval-Augmented Generation Approach to Insurance Information Delivery in Kenya",
-        "after": "Adapting Lar"
-      }
-    },
-    {
-      "type": "truncate_title",
       "paper_id": "1db7704e371d083a",
+      "question_ids": [],
+      "in_frozen_test_set": false,
       "parameters": {
-        "before": "Speculative Retrieval-Augmented Generation for Cost-Efficient Large Language Model Inference",
-        "after": "Speculative "
+        "unrelated_prefix_chars": 168,
+        "random_chars_appended_to_text_for_embedding": 320,
+        "preview": "Yesterday the weather forecast promised heavy rain, so we ca... + VO5&hqb9N%pe5$vCj@vIg#jF..."
+      }
+    },
+    {
+      "type": "truncate_title",
+      "paper_id": "481228d3f394e0fd",
+      "question_ids": [
+        "q6"
+      ],
+      "in_frozen_test_set": true,
+      "parameters": {
+        "before": "Microsoft Azure artificial intelligence / machine learning hackathon for development of retrieval-augmented generation large language model",
+        "after": "Microsoft Az"
+      }
+    },
+    {
+      "type": "truncate_title",
+      "paper_id": "fbf09bbb2f1acd9e",
+      "question_ids": [],
+      "in_frozen_test_set": false,
+      "parameters": {
+        "before": "An Exploratory Study of Agentic Retrieval Augmented Generation for Mental Health Oriented Language Models",
+        "after": "An Explorato"
+      }
+    },
+    {
+      "type": "truncate_title",
+      "paper_id": "7e3933d4f7afadd2",
+      "question_ids": [],
+      "in_frozen_test_set": false,
+      "parameters": {
+        "before": "The Role of Retrieval-Augmented Generation in Improving Factual Accuracy for Medical Large Language Models",
+        "after": "The Role of "
       }
     },
     {
       "type": "stale_published_date",
-      "paper_id": "fbf09bbb2f1acd9e",
+      "paper_id": "928eed655629ebac",
+      "question_ids": [
+        "q2"
+      ],
+      "in_frozen_test_set": true,
       "parameters": {
-        "before": "2026-05-06",
-        "after": "2024-05-06",
-        "days_added_to_age": 730
+        "before": "2026-07-13",
+        "after": "2000-01-01",
+        "before_age_days": 24,
+        "after_age_days": 9714
+      }
+    },
+    {
+      "type": "stale_published_date",
+      "paper_id": "34fdfff352385592",
+      "question_ids": [
+        "q8"
+      ],
+      "in_frozen_test_set": true,
+      "parameters": {
+        "before": "2026-06-30",
+        "after": "2000-01-01",
+        "before_age_days": 37,
+        "after_age_days": 9714
       }
     },
     {
       "type": "stale_published_date",
       "paper_id": "771a95bbbb7dc30e",
+      "question_ids": [],
+      "in_frozen_test_set": false,
       "parameters": {
         "before": "2026-05-01",
-        "after": "2024-05-01",
-        "days_added_to_age": 730
+        "after": "2000-01-01",
+        "before_age_days": 97,
+        "after_age_days": 9714
       }
     },
     {
       "type": "stale_published_date",
-      "paper_id": "9008f0d1d3e157ce",
+      "paper_id": "b76704dbba47c1d6",
+      "question_ids": [],
+      "in_frozen_test_set": false,
       "parameters": {
-        "before": "2026-04-06",
-        "after": "2024-04-06",
-        "days_added_to_age": 730
-      }
-    },
-    {
-      "type": "stale_published_date",
-      "paper_id": "7e3933d4f7afadd2",
-      "parameters": {
-        "before": "2026-03-15",
-        "after": "2024-03-15",
-        "days_added_to_age": 730
+        "before": "2026-06-01",
+        "after": "2000-01-01",
+        "before_age_days": 66,
+        "after_age_days": 9714
       }
     },
     {
       "type": "duplicate_record",
       "paper_id": "074c6be8adb0d50d",
+      "question_ids": [
+        "q5"
+      ],
+      "in_frozen_test_set": true,
       "parameters": {
         "copies_added": 1
       }
     },
     {
       "type": "duplicate_record",
-      "paper_id": "481228d3f394e0fd",
+      "paper_id": "f4651f690313c70a",
+      "question_ids": [
+        "q10"
+      ],
+      "in_frozen_test_set": true,
+      "parameters": {
+        "copies_added": 1
+      }
+    },
+    {
+      "type": "duplicate_record",
+      "paper_id": "bc356736d313c037",
+      "question_ids": [],
+      "in_frozen_test_set": false,
       "parameters": {
         "copies_added": 1
       }

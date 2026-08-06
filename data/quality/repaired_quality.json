@@ -1,10 +1,10 @@
 {
-  "report_name": "corrupted_quality",
-  "generated_at": "2026-08-06T12:19:31.870553+00:00",
-  "total_rows": 26,
+  "report_name": "repaired_quality",
+  "generated_at": "2026-08-06T12:25:39.590036+00:00",
+  "total_rows": 24,
   "total_checks": 10,
-  "passed_checks": 7,
-  "success": false,
+  "passed_checks": 10,
+  "success": true,
   "checks": [
     {
       "name": "required_columns_present",
@@ -18,7 +18,7 @@
       "name": "row_count_minimum",
       "severity": "error",
       "success": true,
-      "observed": 26,
+      "observed": 24,
       "expected": ">= 20",
       "detail": ""
     },
@@ -33,10 +33,10 @@
     {
       "name": "paper_id_unique",
       "severity": "error",
-      "success": false,
-      "observed": 3,
+      "success": true,
+      "observed": 0,
       "expected": 0,
-      "detail": "3 dong duplicate -> retrieval tra ve cung mot bai nhieu lan"
+      "detail": ""
     },
     {
       "name": "title_not_null",
@@ -49,10 +49,10 @@
     {
       "name": "summary_min_length",
       "severity": "error",
-      "success": false,
-      "observed": 4,
+      "success": true,
+      "observed": 0,
       "expected": 0,
-      "detail": "4 dong co summary < 100 ky tu (ngan nhat 0)"
+      "detail": ""
     },
     {
       "name": "text_for_embedding_not_null",
@@ -73,10 +73,10 @@
     {
       "name": "freshness_age_days",
       "severity": "error",
-      "success": false,
-      "observed": 4,
+      "success": true,
+      "observed": 0,
       "expected": 0,
-      "detail": "4 dong co age_days > 180 (cu nhat 9714 ngay)"
+      "detail": "Bai cu nhat 175 ngay, nguong 180"
     },
     {
       "name": "categories_completeness",
@@ -87,11 +87,7 @@
       "detail": ""
     }
   ],
-  "failed_checks": [
-    "paper_id_unique",
-    "summary_min_length",
-    "freshness_age_days"
-  ],
+  "failed_checks": [],
   "warnings": [],
-  "artifact_path": "C:\\Users\\ADMIN\\Dropbox\\PC\\Desktop\\LabVin\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\quality\\corrupted_quality.json"
+  "artifact_path": "C:\\Users\\ADMIN\\Dropbox\\PC\\Desktop\\LabVin\\K4_Day10_Data-Pipeline-Data-Observability-VuaTuat\\data\\quality\\repaired_quality.json"
 }
