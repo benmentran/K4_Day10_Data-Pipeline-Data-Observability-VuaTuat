@@ -1,0 +1,72 @@
+[
+  {
+    "id": "q1",
+    "question_type": "factual",
+    "question": "Ai là tác giả của bài viết về SafeRAG trong lĩnh vực an toàn dầu khí?",
+    "ground_truth": "Qianwen Cao, Chiyu Zhang, Junxiong Ning, Gongru Li",
+    "ground_truth_doc_ids": ["f604458c87fcc8ad"]
+  },
+  {
+    "id": "q2",
+    "question_type": "factual",
+    "question": "JADE-Plus đạt được độ chính xác Top-1 và Top-3 là bao nhiêu trong nghiên cứu về tổn thương xương hàm?",
+    "ground_truth": "Top-1 accuracy: 90% (36/40) và Top-3 accuracy: 100%",
+    "ground_truth_doc_ids": ["928eed655629ebac"]
+  },
+  {
+    "id": "q3",
+    "question_type": "factual",
+    "question": "Framework CM-RAF-Lag-Llama được đề xuất để làm gì?",
+    "ground_truth": "Dự báo chuỗi thời gian cho phân tích cổ phiếu đa thị trường sử dụng retrieval-augmented forecasting",
+    "ground_truth_doc_ids": ["de23fc4ac319930e"]
+  },
+  {
+    "id": "q4",
+    "question_type": "factual",
+    "question": "Sinh viên y khoa nhìn nhận như thế nào về việc sử dụng RAG trong học tập?",
+    "ground_truth": "Sinh viên cho rằng RAG-based LLMs đáng tin cậy hơn so với standard LLM responses chủ yếu nhờ tính minh bạch và kiểm soát nguồn thông tin",
+    "ground_truth_doc_ids": ["1ed7987631bdbdab"]
+  },
+  {
+    "id": "q5",
+    "question_type": "factual",
+    "question": "GPT-5.4 đạt được hiệu suất F1 và accuracy bao nhiêu trong hệ thống kiểm tra tuân thủ thiết kế mái?",
+    "ground_truth": "F1 = 0.97; accuracy = 97%",
+    "ground_truth_doc_ids": ["074c6be8adb0d50d"]
+  },
+  {
+    "id": "q6",
+    "question_type": "factual",
+    "question": "Hi-RAG cải thiện Top-1 accuracy bao nhiêu phần trăm so với Flat-RAG cho single-service và multi-service?",
+    "ground_truth": "Cải thiện Top-1 accuracy lên đến 7.5% cho single-service và 10.0% cho multi-service",
+    "ground_truth_doc_ids": ["27868f5ca6e98bb5"]
+  },
+  {
+    "id": "q7",
+    "question_type": "factual",
+    "question": "Bài viết về autonomous agents được xuất bản ở tạp chí nào và có bao nhiêu ấn phẩm được phân tích?",
+    "ground_truth": "Journal of AI Analytics and Applications, 810 ấn phẩm từ Web of Science Core Collection",
+    "ground_truth_doc_ids": ["34fdfff352385592"]
+  },
+  {
+    "id": "q8",
+    "question_type": "factual",
+    "question": "Phương pháp RAG có cải thiện kết quả của LLM trong y học giấc ngủ không?",
+    "ground_truth": "RAG consistently outperformed the no-RAG baseline, yielding absolute performance gains của 5.6%-10.7% cho MCQs và 8.1%-10.2% cho top diagnosis",
+    "ground_truth_doc_ids": ["771a95bbbb7dc30e"]
+  },
+  {
+    "id": "q9",
+    "question_type": "factual",
+    "question": "Speculative RAG đạt được cải thiện bao nhiêu phần trăm về inference latency và token reduction?",
+    "ground_truth": "33% improvement in inference latency và 29% token reduction",
+    "ground_truth_doc_ids": ["1db7704e371d083a"]
+  },
+  {
+    "id": "q10",
+    "question_type": "factual",
+    "question": "Hybrid RAG kết hợp những retrieval method nào?",
+    "ground_truth": "Semantic node-level retriever và structural path-level retriever kết hợp trong knowledge graph-based retrieval",
+    "ground_truth_doc_ids": ["3426007f8f031964"]
+  }
+]
