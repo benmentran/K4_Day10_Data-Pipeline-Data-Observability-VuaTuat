@@ -16,12 +16,12 @@
 | STT | Họ và tên        | MSSV        | Vai trò chính                       | Module/deliverable sở hữu                                                                              |
 | --: | ---------------- | ----------- | ------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | 1   | Trần An Thắng    | 2A202601756 | Source owner                          | `src/ingestion/crossref.py`: fetch, retry, parse, lưu raw; `validate_raw_records`, `generate_audit_report` |
-| 2   | (Thành viên 2)   | (MSSV)      | Cleaning & test-set owner             | `src/ingestion/cleaning.py`, `src/evaluation/testset.py`                                              |
+| 2   | Trần Bình Minh   | 2A202601434      | Cleaning & test-set owner             | `src/ingestion/cleaning.py`, `src/evaluation/testset.py`                                              |
 | 3   | Tạ Đăng Đức      | 2A202601772 | Observability owner                   | `src/observability/quality.py`, `src/observability/reporting.py`                                      |
-| 4   | (Thành viên 4)   | (MSSV)      | Corruption & repair owner             | `src/ingestion/corruption.py`                                                                          |
+| 4   | Trần Kiều Hạnh   | 2A202601760 | Corruption & repair owner             | `src/ingestion/corruption.py`                                                                          |
 | 5   | Lương Bảo Long   | 2A202601682 | Pipeline integration & evidence owner | `src/pipelines/phase1.py`, `src/pipelines/corruption_flow.py`; reproducibility; consistency check       |
 
-Báo cáo vai trò từng thành viên đặt tại `report/<MSSV>_HoTen.md` (TV1: `TranAnThang_2A202601756.md`; TV3: `TaDangDuc_2A202601772.md`; TV5: `LuongBaoLong_2A202601682.md`).
+Báo cáo vai trò từng thành viên đặt tại `report/<MSSV>_HoTen.md` (TV1: `TranAnThang_2A202601756.md`; TV2: `TranBinhMinh_2A202601434.md`; TV3: `TaDangDuc_2A202601772.md`; TV4: `TranKieuHanh_2A202601760.md`; TV5: `LuongBaoLong_2A202601682.md`).
 
 ## 2. Tóm tắt kết quả
 
