@@ -2,71 +2,91 @@
   {
     "id": "q1",
     "question_type": "factual",
-    "question": "Ai là tác giả của bài viết về SafeRAG trong lĩnh vực an toàn dầu khí?",
+    "question": "Who are the authors of 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-A...'?",
     "ground_truth": "Qianwen Cao, Chiyu Zhang, Junxiong Ning, Gongru Li",
-    "ground_truth_doc_ids": ["f604458c87fcc8ad"]
+    "ground_truth_doc_ids": [
+      "f604458c87fcc8ad"
+    ]
   },
   {
     "id": "q2",
     "question_type": "factual",
-    "question": "JADE-Plus đạt được độ chính xác Top-1 và Top-3 là bao nhiêu trong nghiên cứu về tổn thương xương hàm?",
-    "ground_truth": "Top-1 accuracy: 90% (36/40) và Top-3 accuracy: 100%",
-    "ground_truth_doc_ids": ["928eed655629ebac"]
+    "question": "When was 'JADE-Plus: A Multimodal Agentic Retrieval-Augmented Generati...' published?",
+    "ground_truth": "2026-07-13",
+    "ground_truth_doc_ids": [
+      "928eed655629ebac"
+    ]
   },
   {
     "id": "q3",
     "question_type": "factual",
-    "question": "Framework CM-RAF-Lag-Llama được đề xuất để làm gì?",
-    "ground_truth": "Dự báo chuỗi thời gian cho phân tích cổ phiếu đa thị trường sử dụng retrieval-augmented forecasting",
-    "ground_truth_doc_ids": ["de23fc4ac319930e"]
+    "question": "What category/journal is 'Retrieval-Augmented Large-Language-Model-Based Time-Series F...' published in?",
+    "ground_truth": "unknown",
+    "ground_truth_doc_ids": [
+      "de23fc4ac319930e"
+    ]
   },
   {
     "id": "q4",
     "question_type": "factual",
-    "question": "Sinh viên y khoa nhìn nhận như thế nào về việc sử dụng RAG trong học tập?",
-    "ground_truth": "Sinh viên cho rằng RAG-based LLMs đáng tin cậy hơn so với standard LLM responses chủ yếu nhờ tính minh bạch và kiểm soát nguồn thông tin",
-    "ground_truth_doc_ids": ["1ed7987631bdbdab"]
+    "question": "What is the main contribution of 'Does retrieval-augmented generation impact medical students’...'?",
+    "ground_truth": "BACKGROUND There is evidence of rapid adoption of large language models (LLMs) in undergraduate medical education, with medical students using it to support their learning. This raises concerns particularly around the accuracy of LLM-generated information students are learning.",
+    "ground_truth_doc_ids": [
+      "1ed7987631bdbdab"
+    ]
   },
   {
     "id": "q5",
     "question_type": "factual",
-    "question": "GPT-5.4 đạt được hiệu suất F1 và accuracy bao nhiêu trong hệ thống kiểm tra tuân thủ thiết kế mái?",
-    "ground_truth": "F1 = 0.97; accuracy = 97%",
-    "ground_truth_doc_ids": ["074c6be8adb0d50d"]
+    "question": "What is the primary application of the method described in 'An Agentic AI System for Roof Design Compliance Using Comput...'?",
+    "ground_truth": "Designers, engineers, and building officials face increasing pressure to accelerate and improve the accuracy of design review for buildings and infrastructure.",
+    "ground_truth_doc_ids": [
+      "074c6be8adb0d50d"
+    ]
   },
   {
     "id": "q6",
     "question_type": "factual",
-    "question": "Hi-RAG cải thiện Top-1 accuracy bao nhiêu phần trăm so với Flat-RAG cho single-service và multi-service?",
-    "ground_truth": "Cải thiện Top-1 accuracy lên đến 7.5% cho single-service và 10.0% cho multi-service",
-    "ground_truth_doc_ids": ["27868f5ca6e98bb5"]
+    "question": "What methodology does 'Microsoft Azure artificial intelligence / machine learning h...' employ?",
+    "ground_truth": "The US Army Corps of Engineers (USACE) Civil Works (CW) research and development (R D) mission is to address challenging environmental sustainability problems through innovative science and engineering, which helps to ensure a safer, more prosperous, and more resilient nation.",
+    "ground_truth_doc_ids": [
+      "481228d3f394e0fd"
+    ]
   },
   {
     "id": "q7",
     "question_type": "factual",
-    "question": "Bài viết về autonomous agents được xuất bản ở tạp chí nào và có bao nhiêu ấn phẩm được phân tích?",
-    "ground_truth": "Journal of AI Analytics and Applications, 810 ấn phẩm từ Web of Science Core Collection",
-    "ground_truth_doc_ids": ["34fdfff352385592"]
+    "question": "Who are the authors of 'Hi‐ RAG : A Hierarchical Retrieval‐Augmented Generation Fram...'?",
+    "ground_truth": "Wei Tian, Yuhao Zhou",
+    "ground_truth_doc_ids": [
+      "27868f5ca6e98bb5"
+    ]
   },
   {
     "id": "q8",
     "question_type": "factual",
-    "question": "Phương pháp RAG có cải thiện kết quả của LLM trong y học giấc ngủ không?",
-    "ground_truth": "RAG consistently outperformed the no-RAG baseline, yielding absolute performance gains của 5.6%-10.7% cho MCQs và 8.1%-10.2% cho top diagnosis",
-    "ground_truth_doc_ids": ["771a95bbbb7dc30e"]
+    "question": "When was 'The Age of Autonomous Agents: A Bibliometric Review of Agent...' published?",
+    "ground_truth": "2026-06-30",
+    "ground_truth_doc_ids": [
+      "34fdfff352385592"
+    ]
   },
   {
     "id": "q9",
     "question_type": "factual",
-    "question": "Speculative RAG đạt được cải thiện bao nhiêu phần trăm về inference latency và token reduction?",
-    "ground_truth": "33% improvement in inference latency và 29% token reduction",
-    "ground_truth_doc_ids": ["1db7704e371d083a"]
+    "question": "What category/journal is 'Retrieval-Augmented Generation (RAG), Generative AI, and Age...' published in?",
+    "ground_truth": "unknown",
+    "ground_truth_doc_ids": [
+      "c461d892c39f1eac"
+    ]
   },
   {
     "id": "q10",
     "question_type": "factual",
-    "question": "Hybrid RAG kết hợp những retrieval method nào?",
-    "ground_truth": "Semantic node-level retriever và structural path-level retriever kết hợp trong knowledge graph-based retrieval",
-    "ground_truth_doc_ids": ["3426007f8f031964"]
+    "question": "What is the main contribution of 'Снижение рисков применения LLM (Large Language Model) в сфер...'?",
+    "ground_truth": "В статье проведено исследование особенностей снижения рисков применения LLM (Large Language Model) в сфере экономической безопасности предприятий молочной промышленности на основе подхода RAG (Retrieval-Augmented Generation) в современных условиях.",
+    "ground_truth_doc_ids": [
+      "f4651f690313c70a"
+    ]
   }
 ]
