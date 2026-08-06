@@ -10,4 +10,3 @@ pandas>=2.2.2
 python-dotenv>=1.0.1
 ragas>=0.3.0
 requests>=2.32.3
-sentence-transformers>=5.0.0
