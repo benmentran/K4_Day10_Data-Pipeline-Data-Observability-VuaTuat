@@ -1,0 +1,32 @@
+{
+  "report_name": "baseline_quality",
+  "status": "PASS",
+  "total_rows": 24,
+  "checks": [
+    {
+      "name": "row_count_positive",
+      "status": "PASS"
+    },
+    {
+      "name": "paper_id_not_null",
+      "status": "PASS"
+    },
+    {
+      "name": "paper_id_unique",
+      "status": "PASS"
+    },
+    {
+      "name": "title_not_null",
+      "status": "PASS"
+    },
+    {
+      "name": "summary_min_100_chars",
+      "status": "PASS"
+    },
+    {
+      "name": "freshness_within_threshold",
+      "status": "PASS"
+    }
+  ],
+  "failed_checks": []
+}

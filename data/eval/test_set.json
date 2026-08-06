@@ -1,0 +1,56 @@
+[
+  {
+    "id": "q01",
+    "question_type": "summary",
+    "question": "What is 'SafeRAG: A Large-Language-Model-Based Multistage Retrieval-Augmented Framework for Oil and Gas Safety Report Generation' about?",
+    "ground_truth": "Summary In high-risk industrial settings, leveraging large language models (LLMs) for automated accident analysis and generating safety reports has emerged as an efficient workflow.",
+    "ground_truth_doc_ids": [
+      "f604458c87fcc8ad"
+    ]
+  },
+  {
+    "id": "q02",
+    "question_type": "authors",
+    "question": "Who authored 'JADE-Plus: A Multimodal Agentic Retrieval-Augmented Generation Large Language Framework for Diagnostic Support in Jawbone Lesions: Development and Technical Validation Study'?",
+    "ground_truth": "Soroush Baseri Saadi, Jonas Ver Berne, Rocharles Cavalcante Fontenele, Peter Claes, Reinhilde Jacobs",
+    "ground_truth_doc_ids": [
+      "928eed655629ebac"
+    ]
+  },
+  {
+    "id": "q03",
+    "question_type": "date",
+    "question": "When was 'Retrieval-Augmented Large-Language-Model-Based Time-Series Forecasting for Cross-Market Equity Analysis' published?",
+    "ground_truth": "2026-07-10",
+    "ground_truth_doc_ids": [
+      "de23fc4ac319930e"
+    ]
+  },
+  {
+    "id": "q04",
+    "question_type": "categories",
+    "question": "What categories does 'Does retrieval-augmented generation impact medical students\u2019 perceptions of large language models? (Preprint)' belong to?",
+    "ground_truth": "unknown",
+    "ground_truth_doc_ids": [
+      "1ed7987631bdbdab"
+    ]
+  },
+  {
+    "id": "q05",
+    "question_type": "summary",
+    "question": "What is 'An Agentic AI System for Roof Design Compliance Using Computer Vision, Retrieval-Augmented Generation and Large Language Models' about?",
+    "ground_truth": "Designers, engineers, and building officials face increasing pressure to accelerate and improve the accuracy of design review for buildings and infrastructure.",
+    "ground_truth_doc_ids": [
+      "074c6be8adb0d50d"
+    ]
+  },
+  {
+    "id": "q06",
+    "question_type": "authors",
+    "question": "Who authored 'Microsoft Azure artificial intelligence / machine learning hackathon for development of retrieval-augmented generation large language model'?",
+    "ground_truth": "Janet L. Autrey, Lacey S. Duckworth, Ashly N. Horner, Thomas Sigler, Victoria D. Moore",
+    "ground_truth_doc_ids": [
+      "481228d3f394e0fd"
+    ]
+  }
+]
