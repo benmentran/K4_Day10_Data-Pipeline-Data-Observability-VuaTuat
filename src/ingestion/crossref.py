@@ -72,12 +72,19 @@ def _extract_urls(item: dict) -> tuple[str, str]:
 
 
 def _extract_date(item: dict) -> tuple[str, str]:
-    """Tach published date va updated date tu Crossref item."""
+    """Tach published date va updated date tu Crossref item.
+
+    Crossref su dung nhieu date fields:
+    - issued/published: ngay xuat ban
+    - indexed: ngay du lieu duoc index/updated trong Crossref
+    """
     published = ""
     updated = ""
 
-    if "published" in item and item["published"]:
-        date_parts = item["published"].get("date-parts", [[]])
+    # Lay ngay xuat ban - uu tien 'issued' vi chinh xac hon
+    date_source = item.get("issued") or item.get("published")
+    if date_source:
+        date_parts = date_source.get("date-parts", [[]])
         if date_parts and date_parts[0]:
             parts = date_parts[0]
             if len(parts) >= 3:
@@ -87,8 +94,16 @@ def _extract_date(item: dict) -> tuple[str, str]:
             elif len(parts) == 1:
                 published = f"{parts[0]}-01-01"
 
-    if "updated" in item:
-        updated = item["updated"][:10] if len(item["updated"]) >= 10 else item["updated"]
+    # Lay ngay indexed (updated trong Crossref)
+    indexed = item.get("indexed")
+    if indexed and "date-time" in indexed:
+        updated = indexed["date-time"][:10]
+    elif indexed and "date-parts" in indexed:
+        date_parts = indexed.get("date-parts", [[]])
+        if date_parts and date_parts[0]:
+            parts = date_parts[0]
+            if len(parts) >= 3:
+                updated = f"{parts[0]}-{parts[1]:02d}-{parts[2]:02d}"
 
     return published, updated
 
@@ -131,7 +146,16 @@ def parse_crossref_payload(payload: dict) -> list[PaperRecord]:
 
         abstract = _normalize_text(item.get("abstract", ""))
         authors = _extract_authors(item.get("author", []))
+
+        # Lay categories/subjects, fallback to container-title (journal name)
         subjects = [_normalize_text(s) for s in item.get("subject", [])]
+        if not subjects:
+            container = item.get("container-title", [])
+            if container:
+                journal_name = _normalize_text(container[0])
+                if journal_name:
+                    subjects = [journal_name]
+
         primary_category = subjects[0] if subjects else ""
         published, updated = _extract_date(item)
         abs_url, pdf_url = _extract_urls(item)
@@ -403,7 +427,7 @@ def validate_raw_records(records: list[PaperRecord]) -> tuple[list[PaperRecord],
                     message=f"Published date khong dung format (YYYY-MM-DD): '{record.published}'",
                 ))
 
-        # Check authors
+        # Authors la required - canh bao neu thieu
         if not record.authors:
             record_issues.append(ValidationIssue(
                 record_idx=idx,
@@ -414,10 +438,30 @@ def validate_raw_records(records: list[PaperRecord]) -> tuple[list[PaperRecord],
                 message="Record khong co thong tin tac gia",
             ))
 
-        if record_issues:
-            issues.extend(record_issues)
-        else:
+        # Categories/primary_category la optional - chi can co 1 trong 2
+        # Neu ca 2 deu rong, danh gia la LOW_QUALITY
+        if not record.categories and not record.primary_category:
+            record_issues.append(ValidationIssue(
+                record_idx=idx,
+                doi=record.abs_url,
+                paper_id=record.paper_id,
+                field="categories",
+                issue_type="LOW_QUALITY_CATEGORY",
+                message="Record khong co category/subject (dung journal name lam fallback)",
+            ))
+
+        # Neu co issues nhung khong phai loi critical, van cho phep valid
+        # Chi block neu thieu DOI/title/authors
+        critical_issues = [
+            issue for issue in record_issues
+            if issue.issue_type in ("MISSING_URL", "INVALID_TITLE", "DUPLICATE_ID", "DUPLICATE_DOI", "INVALID_DATE")
+        ]
+        if not critical_issues:
             valid_records.append(record)
+            if record_issues:
+                issues.extend(record_issues)  # Log warnings nhung van valid
+        else:
+            issues.extend(record_issues)
 
     return valid_records, issues
 

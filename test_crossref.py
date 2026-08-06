@@ -29,7 +29,7 @@ def test_parse_crossref_payload():
                     ],
                     "subject": ["Computer Science", "Machine Learning"],
                     "published": {"date-parts": [[2024, 6, 15]]},
-                    "updated": "2024-06-20T10:00:00Z",
+                    "indexed": {"date-time": "2024-06-20T10:00:00Z"},
                     "URL": "https://doi.org/10.1234/test.001",
                     "link": [
                         {
@@ -46,7 +46,7 @@ def test_parse_crossref_payload():
                     "author": [{"family": "Unknown"}],
                     "subject": ["Physics"],
                     "published": {"date-parts": [[2024]]},
-                    "updated": "2024-07-01",
+                    "indexed": {"date-time": "2024-07-01T00:00:00Z"},
                     "URL": "https://doi.org/10.1234/test.002",
                     "link": [],
                 },
@@ -77,6 +77,7 @@ def test_parse_crossref_payload():
     assert r2.summary == ""
     assert r2.authors == ["Unknown"]
     assert r2.published == "2024-01-01"
+    assert r2.updated == "2024-07-01"
 
     print("✓ parse_crossref_payload tests passed!")
 
